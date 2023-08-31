@@ -8,7 +8,7 @@ import 'package:flare_flutter/flare_controls.dart';
 
 class TeddyController extends FlareControls {
   // Store a reference to our face control node (the "ctrl_look" node in Flare)
-  ActorNode _faceControl;
+  ActorNode? _faceControl;
 
   // Storage for our matrix to get global Flutter coordinates into Flare world coordinates.
   Mat2D _globalToFlareWorld = Mat2D();
@@ -28,12 +28,12 @@ class TeddyController extends FlareControls {
   // Project gaze forward by this many pixels.
   static const double _projectGaze = 60.0;
 
-  String _password;
+  String? _password;
 
   @override
   bool advance(FlutterActorArtboard artboard, double elapsed) {
     super.advance(artboard, elapsed);
-    Vec2D targetTranslation;
+    Vec2D? targetTranslation;
     if (_hasFocus) {
       // Get caret in Flare world space.
       Vec2D.transformMat2D(_caretWorld, _caretGlobal, _globalToFlareWorld);
@@ -49,7 +49,7 @@ class TeddyController extends FlareControls {
 
       // Compute the transform that gets us in face "ctrl_face" space.
       Mat2D toFaceTransform = Mat2D();
-      if (Mat2D.invert(toFaceTransform, _faceControl.parent.worldTransform)) {
+      if (Mat2D.invert(toFaceTransform, _faceControl?.parent.worldTransform)) {
         // Put toCaret in local space, note we're using a direction vector
         // not a translation so transform without translation
         Vec2D.transformMat2(toCaret, toCaret, toFaceTransform);
@@ -63,11 +63,11 @@ class TeddyController extends FlareControls {
     // We could just set _faceControl.translation to targetTranslation, but we want to animate it smoothly to this target
     // so we interpolate towards it by a factor of elapsed time in order to maintain speed regardless of frame rate.
     Vec2D diff =
-        Vec2D.subtract(Vec2D(), targetTranslation, _faceControl.translation);
-    Vec2D frameTranslation = Vec2D.add(Vec2D(), _faceControl.translation,
+        Vec2D.subtract(Vec2D(), targetTranslation, _faceControl?.translation);
+    Vec2D frameTranslation = Vec2D.add(Vec2D(), _faceControl?.translation,
         Vec2D.scale(diff, diff, min(1.0, elapsed * 5.0)));
 
-    _faceControl.translation = frameTranslation;
+    _faceControl?.translation = frameTranslation;
 
     return true;
   }
@@ -78,8 +78,8 @@ class TeddyController extends FlareControls {
     super.initialize(artboard);
     _faceControl = artboard.getNode("ctrl_face");
     if (_faceControl != null) {
-      _faceControl.getWorldTranslation(_faceOrigin);
-      Vec2D.copy(_faceOriginLocal, _faceControl.translation);
+      _faceControl?.getWorldTranslation(_faceOrigin);
+      Vec2D.copy(_faceOriginLocal, _faceControl?.translation);
     }
     play("idle");
   }

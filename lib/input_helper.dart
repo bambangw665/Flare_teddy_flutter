@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 
 // Returns first render editable
 RenderEditable findRenderEditable(RenderObject root) {
-  RenderEditable renderEditable;
+  RenderEditable? renderEditable;
   void recursiveFinder(RenderObject child) {
     if (child is RenderEditable) {
       renderEditable = child;
@@ -15,7 +15,8 @@ RenderEditable findRenderEditable(RenderObject root) {
   }
 
   root.visitChildren(recursiveFinder);
-  return renderEditable;
+  // return renderEditable;
+  return renderEditable!;
 }
 
 List<TextSelectionPoint> globalize(
@@ -31,10 +32,10 @@ List<TextSelectionPoint> globalize(
 Offset getCaretPosition(RenderBox box) {
   final RenderEditable renderEditable = findRenderEditable(box);
   if (!renderEditable.hasFocus) {
-    return null;
+    return null!;
   }
   final List<TextSelectionPoint> endpoints = globalize(
-    renderEditable.getEndpointsForSelection(renderEditable.selection),
+    renderEditable.getEndpointsForSelection(renderEditable.selection!),
     renderEditable,
   );
   return endpoints[0].point + const Offset(0.0, -2.0);

@@ -15,22 +15,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  // MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage(Key key) : super(key: key);
 
-  final String title;
+  // final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TeddyController _teddyController;
+  TeddyController? _teddyController;
   @override
   initState() {
     _teddyController = TeddyController();
@@ -98,18 +100,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                     label: "Email",
                                     hint: "Input Your Email?",
                                     onCaretMoved: (Offset caret) {
-                                      _teddyController.lookAt(caret);
+                                      // _teddyController.lookAt(caret);
+                                      _teddyController?.lookAt(caret);
                                     }),
                                 TrackingTextInput(
                                   label: "Password",
                                   hint: "Try 'bears'...",
                                   isObscured: true,
                                   onCaretMoved: (Offset caret) {
-                                    _teddyController.coverEyes(caret != null);
-                                    _teddyController.lookAt(null);
+                                    _teddyController?.coverEyes(caret != null);
+                                    // _teddyController?.lookAt(null);
+                                    _teddyController?.lookAt(caret);
                                   },
                                   onTextChanged: (String value) {
-                                    _teddyController.setPassword(value);
+                                    _teddyController?.setPassword(value);
                                   },
                                 ),
                                 SigninButton(
@@ -119,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             fontSize: 16,
                                             color: Colors.white)),
                                     onPressed: () {
-                                      _teddyController.submitPassword();
+                                      _teddyController?.submitPassword();
                                     })
                               ],
                             )),
